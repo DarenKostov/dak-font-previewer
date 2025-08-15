@@ -4,7 +4,7 @@ CXX= g++
 CXXFLAGS= -std=c++17
 SFMLFLAGS= -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
 OBJFILES= bin/main.o bin/licence.o bin/mainClass.o bin/mainDraw.o bin/mainUpdate.o bin/mainActions.o
-TARGET= bin/TEMPLATE
+TARGET= bin/dakfp
 
 
 all: $(TARGET)
