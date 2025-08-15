@@ -24,33 +24,60 @@ If not, see <https://www.gnu.org/licenses/>.
 
 void MainClass::draw(){
 
-  window.clear();
-  window.setView(mainView);
-  
-  sf::RectangleShape rect(sf::Vector2f(30, 30));
-  rect.setFillColor(sf::Color(255, 255, 255, 255));
-  rect.setPosition(window.mapPixelToCoords(sf::Mouse::getPosition(window), mainView));
-  window.draw(rect);
-
+  //should probably display a warning message about there being 0 fonts....
   if(fonts.size()==0){
-    window.display();
     return;
   }
-  
-  sf::Text sampleText(fonts[selectedFont]);
 
-  sampleText.setString("the quick brown fox jumps over the lazy dog");
+  window.clear();
+  // window.setView(mainView);
+  window.setView(menuView);
 
-  for(int i{0}; i<10; i++){
+  sf::RectangleShape selectedFamily(sf::Vector2f(170, 25));
+  selectedFamily.setFillColor(sf::Color::Red);
+  selectedFamily.setOutlineColor(sf::Color(100, 0, 0));
+  selectedFamily.setOutlineThickness(2);
+  selectedFamily.setPosition({5, static_cast<float>(selectedFontFamily*25+5)});
+  window.draw(selectedFamily);
 
-    int size=10+i*2;
-    // float distance=15.26712*i+5.76027;
-    float distance=1.17926*i*i+7.09307*i+12.8843;
-    
-    sampleText.setCharacterSize(size);
-    sampleText.setPosition({10, distance});
-    window.draw(sampleText);
+  float distance=5;
+  for(auto& [family, members] : fonts){
+    sf::Text identifier(members.front());
+    identifier.setString(family);
+    identifier.setCharacterSize(20);
+    identifier.setPosition({5, distance});
+    window.draw(identifier);
+    distance+=25;
   }
+  
+  // float distance=5;
+  // for(auto& [family, members] : fonts[selectedFamily].second){
+  //   sf::Text identifier(members.front());
+  //   identifier.setString(family);
+  //   identifier.setCharacterSize(20);
+  //   identifier.setPosition({5, distance});
+  //   window.draw(identifier);
+  //   distance+=25;
+  // }
+
+
+
+
+  
+  // sf::Text sampleText(fonts[selectedFont]);
+
+  // sampleText.setString("the quick brown fox jumps over the lazy dog");
+
+  // for(int i{0}; i<10; i++){
+
+  //   int size=10+i*2;
+  //   // float distance=15.26712*i+5.76027;
+  //   float distance=1.17926*i*i+7.09307*i+12.8843;
+    
+  //   sampleText.setCharacterSize(size);
+  //   sampleText.setPosition({10, distance});
+  //   window.draw(sampleText);
+  // }
 
   window.display();
   

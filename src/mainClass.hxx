@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <set>
+#include <unordered_map>
 #include <vector>
 
 class MainClass{
@@ -29,9 +30,12 @@ class MainClass{
     //sfml stuff
     sf::RenderWindow window;
     sf::View mainView;
+    sf::View menuView;
     sf::Clock clock;
-    std::vector<sf::Font> fonts;
-    int selectedFont{0};
+    int selectedFontFamily{0};
+    int selectedFontMember{0};
+    // std::unordered_map<std::string, std::vector<sf::Font>> fonts;
+    std::vector<std::pair<std::string, std::vector<sf::Font>>> fonts;
     
     
   public:

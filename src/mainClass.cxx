@@ -31,10 +31,27 @@ MainClass::MainClass(std::set<std::filesystem::path> fontPaths){
   window.setVerticalSyncEnabled(true);
 
 
+  std::unordered_map<std::string, std::vector<sf::Font>> mappedFonts;
   for(const auto& font : fontPaths){
-    fonts.push_back(sf::Font(font));
+
+    //load the font and make sure it actually loaded
+    sf::Font newFont;
+    bool success=newFont.openFromFile(font);
+    if(!success){
+      std::cerr << font.c_str() << " did not load :/\n";
+      continue;
+    }
+
+
+    mappedFonts[newFont.getInfo().family].push_back(newFont);
   }
-  selectedFont=0;
+
+  for(auto& [family, members] : mappedFonts){
+    fonts.push_back({family, members});
+  }
+
+  selectedFontFamily=0;
+  selectedFontMember=0;
 
   
 }
@@ -49,10 +66,10 @@ void MainClass::startProgram(){
 
   while(window.isOpen()){
 
-    for(const auto& font : fonts){
-      std::cout << font.getInfo().family << "\n";
-    }
-    std::cout << "========\n";
+    // for(const auto& font : fonts){
+    //   std::cout << font.getInfo().family << "\n";
+    // }
+    // std::cout << "========\n";
 
     //drawing 66666-15fps 33333-30fps 16666-60fps 11111-90fps 8333-120fps 4166-240fps 
     usleep(16666);

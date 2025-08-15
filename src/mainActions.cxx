@@ -16,6 +16,7 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include "mainClass.hxx"
+#include <SFML/Window/Keyboard.hpp>
 
 void MainClass::performActions(){
 
@@ -23,11 +24,31 @@ void MainClass::performActions(){
   while(const std::optional event=window.pollEvent()){
     if (event->is<sf::Event::Closed>()){
       window.close();
-    }else{
-      if(const auto* resized=event->getIf<sf::Event::Resized>()){
-        float windowWidth=resized->size.x;
-        float windowHeight=resized->size.y;
-        mainView= sf::View(sf::FloatRect({0.f, 0.f}, {windowWidth, windowHeight}));
+    }else
+    if(const auto* resized=event->getIf<sf::Event::Resized>()){
+      float windowWidth=resized->size.x;
+      float windowHeight=resized->size.y;
+      mainView= sf::View(sf::FloatRect({0.f, 0.f}, {windowWidth, windowHeight}));
+    }else
+    if(const auto* keyPressed=event->getIf<sf::Event::KeyPressed>()){
+      switch(keyPressed->code){
+        case sf::Keyboard::Key::Up:
+          selectedFontFamily=std::max(selectedFontFamily-1, 0);
+          selectedFontMember=0;
+          break;
+        case sf::Keyboard::Key::Down:
+          selectedFontFamily=std::min(selectedFontFamily+1, static_cast<int>(fonts.size()-1));
+          selectedFontMember=0;
+          break;
+        case sf::Keyboard::Key::Left:
+          selectedFontMember=std::max(selectedFontMember-1, 0);
+          break;
+        case sf::Keyboard::Key::Right:
+          selectedFontMember=std::min(selectedFontMember+1, static_cast<int>(fonts[selectedFontFamily].second.size()-1));
+          break;
+        default:
+          //do nothing
+          break;
       }
     }
   }
