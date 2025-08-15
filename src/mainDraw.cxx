@@ -18,6 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 #include "mainClass.hxx"
 
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/Text.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Mouse.hpp>
 
@@ -30,6 +31,26 @@ void MainClass::draw(){
   rect.setFillColor(sf::Color(255, 255, 255, 255));
   rect.setPosition(window.mapPixelToCoords(sf::Mouse::getPosition(window), mainView));
   window.draw(rect);
+
+  if(fonts.size()==0){
+    window.display();
+    return;
+  }
+  
+  sf::Text sampleText(fonts[selectedFont]);
+
+  sampleText.setString("the quick brown fox jumps over the lazy dog");
+
+  for(int i{0}; i<10; i++){
+
+    int size=10+i*2;
+    // float distance=15.26712*i+5.76027;
+    float distance=1.17926*i*i+7.09307*i+12.8843;
+    
+    sampleText.setCharacterSize(size);
+    sampleText.setPosition({10, distance});
+    window.draw(sampleText);
+  }
 
   window.display();
   

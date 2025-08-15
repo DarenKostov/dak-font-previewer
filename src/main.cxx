@@ -19,6 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 #include <iostream>
 #include <csignal>
+#include <set>
 
 //prints the licence
 void printLicence();
@@ -67,9 +68,10 @@ void signal_handler(int signal_num){
 
 int main(int argc, char **argv){
 
+  std::set<std::filesystem::path> fontPaths;
 
   //check all flags
-  for(int i=0; i<argc; i++){
+  for(int i=1; i<argc; i++){
     std::string thisArg=std::string(argv[i]);
     if(thisArg=="-l" || thisArg=="--licence"){
       printLicence();
@@ -80,6 +82,10 @@ int main(int argc, char **argv){
     }else if(thisArg=="-v" || thisArg=="--version"){
       printVersion();
       return 0;
+    }else{
+
+      fontPaths.insert(std::filesystem::path(thisArg));
+
     }
   }
 
@@ -89,7 +95,7 @@ int main(int argc, char **argv){
   signal(SIGINT, signal_handler);
 
 
-  MainClass* mainInstance=new MainClass();
+  MainClass* mainInstance=new MainClass(fontPaths);
   atExitFree(mainInstance);
 
   mainInstance->startProgram();

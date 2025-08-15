@@ -16,18 +16,25 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include "mainClass.hxx"
+#include <SFML/Graphics/Font.hpp>
 #include <charconv>
+#include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
 
 
-MainClass::MainClass(){
+MainClass::MainClass(std::set<std::filesystem::path> fontPaths){
   window.create(sf::VideoMode({123, 123}), "WXYZ");
   mainView=sf::View(sf::FloatRect({0, 0}, {123, 123}));
   mainView.setViewport(sf::FloatRect({0, 0}, {1, 1}));
   window.setView(mainView);
   window.setVerticalSyncEnabled(true);
 
+
+  for(const auto& font : fontPaths){
+    fonts.push_back(sf::Font(font));
+  }
+  selectedFont=0;
 
   
 }
@@ -41,6 +48,11 @@ void MainClass::startProgram(){
   clock.restart();
 
   while(window.isOpen()){
+
+    for(const auto& font : fonts){
+      std::cout << font.getInfo().family << "\n";
+    }
+    std::cout << "========\n";
 
     //drawing 66666-15fps 33333-30fps 16666-60fps 11111-90fps 8333-120fps 4166-240fps 
     usleep(16666);

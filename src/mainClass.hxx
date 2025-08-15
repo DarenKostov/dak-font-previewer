@@ -16,6 +16,9 @@ If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include <set>
+#include <vector>
 
 class MainClass{
 
@@ -27,13 +30,14 @@ class MainClass{
     sf::RenderWindow window;
     sf::View mainView;
     sf::Clock clock;
-
+    std::vector<sf::Font> fonts;
+    int selectedFont{0};
     
     
   public:
 
     //constructor, like a atSTartUp function
-    MainClass();
+    MainClass(std::set<std::filesystem::path> fontPaths);
 
     //deconstror
     ~MainClass();

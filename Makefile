@@ -10,10 +10,12 @@ TARGET= bin/dakfp
 all: $(TARGET)
 
 
-$(TARGET): $(OBJFILES)
+$(TARGET): ./bin $(OBJFILES)
 	@echo FINAL BINARY:
 	$(CXX) $(CXXFLAGS) $(SFMLFLAGS) $(OBJFILES) -o $(TARGET)
 	
+./bin:
+	mkdir ./bin
 
 bin/main.o: src/main.cxx src/mainClass.hxx
 	@echo MAIN:
