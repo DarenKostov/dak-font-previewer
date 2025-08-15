@@ -21,6 +21,7 @@ If not, see <https://www.gnu.org/licenses/>.
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Mouse.hpp>
+#include <iostream>
 
 void MainClass::draw(){
 
@@ -30,8 +31,8 @@ void MainClass::draw(){
   }
 
   window.clear();
-  // window.setView(mainView);
-  window.setView(menuView);
+  window.setView(mainView);
+  // window.setView(menuView);
 
   sf::RectangleShape selectedFamily(sf::Vector2f(170, 25));
   selectedFamily.setFillColor(sf::Color::Red);
@@ -40,6 +41,16 @@ void MainClass::draw(){
   selectedFamily.setPosition({5, static_cast<float>(selectedFontFamily*25+5)});
   window.draw(selectedFamily);
 
+  sf::RectangleShape selectedMember(sf::Vector2f(170, 25));
+  selectedMember.setFillColor(sf::Color::Blue);
+  selectedMember.setOutlineColor(sf::Color(0, 0, 100));
+  selectedMember.setOutlineThickness(2);
+  selectedMember.setPosition({5+170, static_cast<float>(selectedFontMember*25+5)});
+  window.draw(selectedMember);
+
+
+
+  
   float distance=5;
   for(auto& [family, members] : fonts){
     sf::Text identifier(members.front());
@@ -50,34 +61,43 @@ void MainClass::draw(){
     distance+=25;
   }
   
-  // float distance=5;
-  // for(auto& [family, members] : fonts[selectedFamily].second){
-  //   sf::Text identifier(members.front());
-  //   identifier.setString(family);
-  //   identifier.setCharacterSize(20);
-  //   identifier.setPosition({5, distance});
-  //   window.draw(identifier);
-  //   distance+=25;
-  // }
+  distance=5;
+  for(auto& member : fonts[selectedFontFamily].second){
+    
+    sf::Text identifier(member);
+    identifier.setString(fonts[selectedFontFamily].first);
+    identifier.setCharacterSize(20);
+    identifier.setPosition({5+170, distance});
+    window.draw(identifier);
+    distance+=25;
+  }
 
 
 
 
   
-  // sf::Text sampleText(fonts[selectedFont]);
+  sf::Text sampleText(fonts[selectedFontFamily].second[selectedFontMember]);
+  sampleText.setString("the quick brown fox jumps over the lazy dog");
 
-  // sampleText.setString("the quick brown fox jumps over the lazy dog");
+  //make usre the sample text is big enough to be seen but not too big as to go off screen
+  for(int i{0}; i<50; i++){
+    sampleText.setCharacterSize(i);
+    if(sampleText.getLocalBounds().size.x>700){
+      sampleText.setCharacterSize(i-1);
+      break;
+    }
+  }
 
-  // for(int i{0}; i<10; i++){
+  sampleText.setPosition({170*2+20, 5});
+  window.draw(sampleText);
 
-  //   int size=10+i*2;
-  //   // float distance=15.26712*i+5.76027;
-  //   float distance=1.17926*i*i+7.09307*i+12.8843;
-    
-  //   sampleText.setCharacterSize(size);
-  //   sampleText.setPosition({10, distance});
-  //   window.draw(sampleText);
-  // }
+  sampleText.setStyle(sf::Text::Italic);
+  sampleText.setPosition({170*2+20, static_cast<float>(10+sampleText.getCharacterSize())});
+  window.draw(sampleText);
+
+  sampleText.setStyle(sf::Text::StrikeThrough);
+  sampleText.setPosition({170*2+20, 2*static_cast<float>(10+sampleText.getCharacterSize())});
+  window.draw(sampleText);
 
   window.display();
   
